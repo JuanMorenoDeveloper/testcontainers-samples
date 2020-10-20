@@ -23,9 +23,7 @@ public class PostgresSqlIntegrationTest extends AbstractContainerDatabaseTest {
         assertThat(postgresqlContainer.isRunning()).isTrue();
 
         try (var result = performQuery(postgresqlContainer, "select 1")) {
-            while (result.next()) {
-                assertThat(result.getString(1)).isNotNull();
-            }
+            assertThat(result.getInt(1)).isOne();
         }
     }
 
