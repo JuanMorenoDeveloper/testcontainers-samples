@@ -1,30 +1,49 @@
 package uy.com.proitc.testcontainers;
 
+import static java.util.Collections.singletonMap;
+import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
+
+import java.sql.SQLException;
 import org.junit.jupiter.api.Test;
+import org.testcontainers.containers.JdbcDatabaseContainer;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
-import java.sql.SQLException;
-
-import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
-
 @Testcontainers
 public class PostgresSqlIntegrationTest extends AbstractContainerDatabaseTest {
 
-    @Container
-    private PostgreSQLContainer postgresqlContainer = new PostgreSQLContainer()
-            .withDatabaseName("foo")
-            .withUsername("foo")
-            .withPassword("secret");
+  //Containers declared as static fields will be shared between test methods.
+  @Container
+  private static JdbcDatabaseContainer postgresqlContainer = (JdbcDatabaseContainer) new PostgreSQLContainer(
+      "postgres:9.6.12")
+      .withDatabaseName("foo")
+      .withUsername("foo")
+      .withPassword("secret")
+      .withInitScript("init_script.sql")
+      // Container can have tmpfs mounts for storing data in host memory.
+      // This is useful if you want to speed up your database tests.
+      .withTmpFs(singletonMap("/var/lib/postgresql/data", "rw"));
 
-    @Test
-    void test() throws SQLException {
-        assertThat(postgresqlContainer.isRunning()).isTrue();
+  @Test
+  void givenId_whenPerformQuery_thenGetApplicationName() throws SQLException {
+    try (var result = performQuery(postgresqlContainer,
+        "select id, name from application where id=1")) {
 
-        try (var result = performQuery(postgresqlContainer, "select 1")) {
-            assertThat(result.getInt(1)).isOne();
-        }
+      assertThat(result.getString("name")).isEqualTo("Transcof");
     }
+  }
+
+  @Test
+  void whenPerformQueryFilteredByVersion_thenGetCorrectCounter() throws SQLException {
+    try (var result = performQuery(postgresqlContainer,
+        """
+            select count(id) as count from application 
+            where details -> 'version' is not null
+            """)) {
+
+      assertThat(result.getInt("count")).isEqualTo(4);
+    }
+  }
 
 }
