@@ -5,7 +5,7 @@ import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 
 import java.sql.SQLException;
 import org.junit.jupiter.api.Test;
-import org.testcontainers.containers.JdbcDatabaseContainer;
+import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
@@ -15,7 +15,7 @@ public class PostgresSqlIntegrationTest extends AbstractContainerDatabaseTest {
 
   //Containers declared as static fields will be shared between test methods.
   @Container
-  private static JdbcDatabaseContainer postgresqlContainer = (JdbcDatabaseContainer) new PostgreSQLContainer(
+  static final GenericContainer postgresqlContainer = new PostgreSQLContainer(
       "postgres:9.6.12")
       .withDatabaseName("foo")
       .withUsername("foo")

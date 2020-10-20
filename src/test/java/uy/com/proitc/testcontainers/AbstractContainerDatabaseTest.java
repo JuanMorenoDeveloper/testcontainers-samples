@@ -5,13 +5,14 @@ import com.zaxxer.hikari.HikariDataSource;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.sql.DataSource;
+import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.containers.JdbcDatabaseContainer;
 
-public abstract class AbstractContainerDatabaseTest {
+abstract class AbstractContainerDatabaseTest {
 
-  protected ResultSet performQuery(JdbcDatabaseContainer<?> container, String sql)
+  protected ResultSet performQuery(GenericContainer<?> container, String sql)
       throws SQLException {
-    var ds = getDataSource(container);
+    var ds = getDataSource((JdbcDatabaseContainer<?>) container);
     var statement = ds.getConnection().createStatement();
     statement.execute(sql);
     var resultSet = statement.getResultSet();
@@ -25,7 +26,6 @@ public abstract class AbstractContainerDatabaseTest {
     config.setUsername(container.getUsername());
     config.setPassword(container.getPassword());
     config.setDriverClassName(container.getDriverClassName());
-
     return new HikariDataSource(config);
   }
 }
