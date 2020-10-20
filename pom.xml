@@ -2,20 +2,25 @@
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xmlns="http://maven.apache.org/POM/4.0.0"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <artifactId>testcontainers-samples</artifactId>
+  <modelVersion>4.0.0</modelVersion>
 
-  <build>
-    <plugins>
-      <plugin>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.8.1</version>
-      </plugin>
-      <plugin>
-        <artifactId>maven-surefire-plugin</artifactId>
-        <version>2.22.2</version>
-      </plugin>
-    </plugins>
-  </build>
+  <artifactId>testcontainers-samples</artifactId>
+  <groupId>uy.com.proitc</groupId>
+  <version>1.0-SNAPSHOT</version>
+
+  <properties>
+    <HikariCP.version>3.4.5</HikariCP.version>
+    <assertj-core.version>3.17.2</assertj-core.version>
+    <junit-jupiter.version>5.7.0</junit-jupiter.version>
+    <maven.compiler.source>15</maven.compiler.source>
+    <maven.compiler.target>${maven.compiler.source}</maven.compiler.target>
+    <postgresql.version>42.2.18</postgresql.version>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <testcontainers.version>1.14.3</testcontainers.version>
+    <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
+    <maven-surefire-plugin.version>2.22.2</maven-surefire-plugin.version>
+  </properties>
+
   <dependencies>
     <dependency>
       <artifactId>postgresql</artifactId>
@@ -52,21 +57,19 @@
       <version>${testcontainers.version}</version>
     </dependency>
   </dependencies>
-  <groupId>uy.com.proitc</groupId>
 
-  <modelVersion>4.0.0</modelVersion>
+  <build>
+    <plugins>
+      <plugin>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>${maven-compiler-plugin.version}</version>
+      </plugin>
+      <plugin>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>${maven-surefire-plugin.version}</version>
+      </plugin>
+    </plugins>
+  </build>
 
-  <properties>
-    <HikariCP.version>3.4.5</HikariCP.version>
-    <assertj-core.version>3.17.2</assertj-core.version>
-    <junit-jupiter.version>5.7.0</junit-jupiter.version>
-    <maven.compiler.source>15</maven.compiler.source>
-    <maven.compiler.target>${maven.compiler.source}</maven.compiler.target>
-    <postgresql.version>42.2.18</postgresql.version>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <testcontainers.version>1.14.3</testcontainers.version>
-  </properties>
-
-  <version>1.0-SNAPSHOT</version>
 
 </project>
