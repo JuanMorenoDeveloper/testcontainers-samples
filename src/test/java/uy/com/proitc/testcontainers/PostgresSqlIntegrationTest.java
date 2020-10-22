@@ -35,7 +35,7 @@ public class PostgresSqlIntegrationTest extends AbstractContainerDatabaseTest {
   }
 
   @Test
-  void givenAppsWithVersion_whenPerformQuery_thenGetCorrectCounter() throws SQLException {
+  void givenAppsWithVersion_whenPerformQuery_thenGetCounter() throws SQLException {
     try (var result = performQuery(postgresqlContainer,
         """
             select count(id) as count from application 
