@@ -9,7 +9,7 @@ import javax.sql.DataSource;
 import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.containers.JdbcDatabaseContainer;
 
-public interface AppRepository {
+interface AppRepository {
 
   long countProductsWithVersion();
 

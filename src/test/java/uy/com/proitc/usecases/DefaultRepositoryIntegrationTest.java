@@ -10,7 +10,7 @@ import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
 @Testcontainers
-public class DefaultRepositoryIntegrationTest {
+class DefaultRepositoryIntegrationTest {
 
   //Containers declared as static fields will be shared between test methods.
   @Container

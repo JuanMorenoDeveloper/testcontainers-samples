@@ -3,7 +3,7 @@ package uy.com.proitc.usecases;
 import java.sql.SQLException;
 import org.testcontainers.containers.GenericContainer;
 
-public class DefaultAppRepository implements AppRepository {
+class DefaultAppRepository implements AppRepository {
 
 
   private final GenericContainer<?> postgresqlContainer;
