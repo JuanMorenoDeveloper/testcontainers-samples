@@ -1,21 +1,19 @@
 package uy.com.proitc.usecases;
 
 import java.sql.SQLException;
-import org.testcontainers.containers.GenericContainer;
+import javax.sql.DataSource;
 
 class DefaultAppRepository implements AppRepository {
 
+  private final DataSource dataSource;
 
-  private final GenericContainer<?> postgresqlContainer;
-
-  public DefaultAppRepository(
-      GenericContainer<?> postgresqlContainer) {
-    this.postgresqlContainer = postgresqlContainer;
+  public DefaultAppRepository(DataSource dataSource) {
+    this.dataSource = dataSource;
   }
 
   @Override
   public long countProductsWithVersion() {
-    try (var result = performQuery(postgresqlContainer,
+    try (var result = performQuery(dataSource,
         """
             select count(id) as count from application 
             where details -> 'version' is not null
@@ -28,7 +26,7 @@ class DefaultAppRepository implements AppRepository {
 
   @Override
   public String findNameById(int id) {
-    try (var result = performQuery(postgresqlContainer,
+    try (var result = performQuery(dataSource,
         "select name from application where id=?", id)) {
       return result.getString("name");
     } catch (SQLException e) {
