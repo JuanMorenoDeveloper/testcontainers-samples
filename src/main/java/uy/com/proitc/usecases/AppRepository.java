@@ -18,16 +18,18 @@ interface AppRepository {
   default ResultSet performQuery(GenericContainer<?> container, String sql)
       throws SQLException {
     var ds = getDataSource((JdbcDatabaseContainer<?>) container);
-    var statement = ds.getConnection().prepareStatement(sql);
-    return getResultSet(statement);
+    try (var statement = ds.getConnection().prepareStatement(sql)) {
+      return getResultSet(statement);
+    }
   }
 
   default ResultSet performQuery(GenericContainer<?> container, String sql, int id)
       throws SQLException {
     var ds = getDataSource((JdbcDatabaseContainer<?>) container);
-    var statement = ds.getConnection().prepareStatement(sql);
-    statement.setInt(1, id);
-    return getResultSet(statement);
+    try (var statement = ds.getConnection().prepareStatement(sql)) {
+      statement.setInt(1, id);
+      return getResultSet(statement);
+    }
   }
 
   default DataSource getDataSource(JdbcDatabaseContainer<?> container) {
