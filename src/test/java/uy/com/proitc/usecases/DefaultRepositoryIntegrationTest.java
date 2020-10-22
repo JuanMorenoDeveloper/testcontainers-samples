@@ -1,9 +1,8 @@
-package uy.com.proitc.testcontainers;
+package uy.com.proitc.usecases;
 
 import static java.util.Collections.singletonMap;
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 
-import java.sql.SQLException;
 import org.junit.jupiter.api.Test;
 import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.containers.PostgreSQLContainer;
@@ -11,11 +10,11 @@ import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
 @Testcontainers
-public class PostgresSqlIntegrationTest extends AbstractContainerDatabaseTest {
+public class DefaultRepositoryIntegrationTest {
 
   //Containers declared as static fields will be shared between test methods.
   @Container
-  static final GenericContainer postgresqlContainer = new PostgreSQLContainer(
+  static final GenericContainer container = new PostgreSQLContainer(
       "postgres:9.6.12")
       .withDatabaseName("foo")
       .withUsername("foo")
@@ -26,24 +25,21 @@ public class PostgresSqlIntegrationTest extends AbstractContainerDatabaseTest {
       .withTmpFs(singletonMap("/var/lib/postgresql/data", "rw"));
 
   @Test
-  void givenId_whenPerformQuery_thenGetApplicationName() throws SQLException {
-    try (var result = performQuery(postgresqlContainer,
-        "select id, name from application where id=1")) {
+  void givenId_whenFindNameById_thenGetName() {
+    var repository = new DefaultAppRepository(container);
 
-      assertThat(result.getString("name")).isEqualTo("Transcof");
-    }
+    String name = repository.findNameById(1);
+
+    assertThat(name).isEqualTo("Transcof");
   }
 
   @Test
-  void givenAppsWithVersion_whenPerformQuery_thenGetCounter() throws SQLException {
-    try (var result = performQuery(postgresqlContainer,
-        """
-            select count(id) as count from application 
-            where details -> 'version' is not null
-            """)) {
+  void givenAppsWithVersion_whenCountProductsWithVersion_thenGetCounter() {
+    var repository = new DefaultAppRepository(container);
 
-      assertThat(result.getInt("count")).isEqualTo(4);
-    }
+    long count = repository.countProductsWithVersion();
+
+    assertThat(count).isEqualTo(4);
   }
 
 }

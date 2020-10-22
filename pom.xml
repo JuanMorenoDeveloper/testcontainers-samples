@@ -47,13 +47,11 @@
     <dependency>
       <artifactId>junit-jupiter</artifactId>
       <groupId>org.testcontainers</groupId>
-      <scope>test</scope>
       <version>${testcontainers.version}</version>
     </dependency>
     <dependency>
       <artifactId>postgresql</artifactId>
       <groupId>org.testcontainers</groupId>
-      <scope>test</scope>
       <version>${testcontainers.version}</version>
     </dependency>
   </dependencies>
