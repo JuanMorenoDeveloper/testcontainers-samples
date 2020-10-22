@@ -6,7 +6,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.sql.DataSource;
-import org.jetbrains.annotations.NotNull;
 import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.containers.JdbcDatabaseContainer;
 
@@ -40,7 +39,6 @@ public interface AppRepository {
     return new HikariDataSource(config);
   }
 
-  @NotNull
   private ResultSet getResultSet(PreparedStatement statement) throws SQLException {
     statement.execute();
     var resultSet = statement.getResultSet();
