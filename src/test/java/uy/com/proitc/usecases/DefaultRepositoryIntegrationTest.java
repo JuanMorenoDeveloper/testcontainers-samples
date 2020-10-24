@@ -21,9 +21,9 @@ class DefaultRepositoryIntegrationTest {
   @Container
   static final GenericContainer container = new PostgreSQLContainer(
       "postgres:9.6.12")
-      .withDatabaseName("foo")
-      .withUsername("foo")
-      .withPassword("secret")
+      .withDatabaseName("product_db")
+      .withUsername("user")
+      .withPassword("password")
       .withInitScript("init_script.sql")
       // Container can have tmpfs mounts for storing data in host memory.
       // This is useful if you want to speed up your database tests.
