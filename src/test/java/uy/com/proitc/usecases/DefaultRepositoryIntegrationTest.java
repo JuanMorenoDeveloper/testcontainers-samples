@@ -52,10 +52,11 @@ class DefaultRepositoryIntegrationTest {
   @BeforeAll
   static void init() {
     var config = new HikariConfig();
-    config.setJdbcUrl(((JdbcDatabaseContainer<?>) container).getJdbcUrl());
-    config.setUsername(((JdbcDatabaseContainer<?>) container).getUsername());
-    config.setPassword(((JdbcDatabaseContainer<?>) container).getPassword());
-    config.setDriverClassName(((JdbcDatabaseContainer<?>) container).getDriverClassName());
+    var jdbcContainer = (JdbcDatabaseContainer<?>) container;
+    config.setJdbcUrl(jdbcContainer.getJdbcUrl());
+    config.setUsername(jdbcContainer.getUsername());
+    config.setPassword(jdbcContainer.getPassword());
+    config.setDriverClassName(jdbcContainer.getDriverClassName());
     datasource = new HikariDataSource(config);
   }
 
