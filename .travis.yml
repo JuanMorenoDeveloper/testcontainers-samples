@@ -1,6 +1,6 @@
 language: java
 jdk:
-  - openjdk15
+  - openjdk17
 before_install:
   - chmod +x mvnw
 script:
