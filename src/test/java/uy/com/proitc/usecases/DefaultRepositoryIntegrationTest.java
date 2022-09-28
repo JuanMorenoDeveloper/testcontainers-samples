@@ -6,10 +6,9 @@ import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import javax.sql.DataSource;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.testcontainers.containers.GenericContainer;
-import org.testcontainers.containers.JdbcDatabaseContainer;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
@@ -17,19 +16,19 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 @Testcontainers
 class DefaultRepositoryIntegrationTest {
 
-  //Containers declared as static fields will be shared between test methods.
+  // Containers declared as static fields will be shared between test methods.
   @Container
-  static final GenericContainer container = new PostgreSQLContainer(
-      "postgres:9.6.12")
-      .withDatabaseName("product_db")
-      .withUsername("user")
-      .withPassword("password")
-      .withInitScript("init_script.sql")
-      // Container can have tmpfs mounts for storing data in host memory.
-      // This is useful if you want to speed up your database tests.
-      .withTmpFs(singletonMap("/var/lib/postgresql/data", "rw"));
+  private static final PostgreSQLContainer<?> container =
+      new PostgreSQLContainer<>("postgres:13.7")
+          .withDatabaseName("product_db")
+          .withUsername("user")
+          .withPassword("password")
+          .withInitScript("init_script.sql")
+          // Container can have tmpfs mounts for storing data in host memory.
+          // This is useful if you want to speed up your database tests.
+          .withTmpFs(singletonMap("/var/lib/postgresql/data", "rw"));
 
-  static DataSource datasource;
+  private static DataSource datasource;
 
   @Test
   void givenId_whenFindNameById_thenGetName() {
@@ -52,12 +51,15 @@ class DefaultRepositoryIntegrationTest {
   @BeforeAll
   static void init() {
     var config = new HikariConfig();
-    var jdbcContainer = (JdbcDatabaseContainer<?>) container;
-    config.setJdbcUrl(jdbcContainer.getJdbcUrl());
-    config.setUsername(jdbcContainer.getUsername());
-    config.setPassword(jdbcContainer.getPassword());
-    config.setDriverClassName(jdbcContainer.getDriverClassName());
+    config.setJdbcUrl(container.getJdbcUrl());
+    config.setUsername(container.getUsername());
+    config.setPassword(container.getPassword());
+    config.setDriverClassName(container.getDriverClassName());
     datasource = new HikariDataSource(config);
   }
 
+  @AfterAll
+  static void close() {
+    container.close();
+  }
 }

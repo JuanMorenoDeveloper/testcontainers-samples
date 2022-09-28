@@ -1,35 +1,36 @@
 package uy.com.proitc.usecases;
 
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.sql.DataSource;
 
 interface AppRepository {
 
-  long countProductsWithVersion();
+  Long countProductsWithVersion();
 
   String findNameById(int id);
 
-  default ResultSet performQuery(DataSource dataSource, String sql)
-      throws SQLException {
+  default String performQuery(DataSource dataSource, String sql, String columName) {
     try (var statement = dataSource.getConnection().prepareStatement(sql)) {
-      return getResultSet(statement);
+      return getResultSet(statement, columName);
+    } catch (SQLException e) {
+      throw new IllegalStateException(e);
     }
   }
 
-  default ResultSet performQuery(DataSource dataSource, String sql, int id)
-      throws SQLException {
+  default String performQuery(DataSource dataSource, String sql, String columName, int id) {
     try (var statement = dataSource.getConnection().prepareStatement(sql)) {
       statement.setInt(1, id);
-      return getResultSet(statement);
+      return getResultSet(statement, columName);
+    } catch (SQLException e) {
+      throw new IllegalStateException(e);
     }
   }
 
-  private ResultSet getResultSet(PreparedStatement statement) throws SQLException {
+  private String getResultSet(PreparedStatement statement, String columName) throws SQLException {
     statement.execute();
     var resultSet = statement.getResultSet();
     resultSet.next();
-    return resultSet;
+    return resultSet.getString(columName);
   }
 }

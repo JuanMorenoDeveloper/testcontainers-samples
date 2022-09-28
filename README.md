@@ -1,3 +1,3 @@
 # Testcontainers samples
 
-[![Build Status](https://travis-ci.org/JuanMorenoDeveloper/testcontainers-samples.svg?branch=master)](https://travis-ci.org/JuanMorenoDeveloper/testcontainers-samples)
+[![testcontainers-samples](https://github.com/JuanMorenoDeveloper/testcontainers-samples/actions/workflows/ci.yaml/badge.svg)](https://github.com/JuanMorenoDeveloper/testcontainers-samples/actions/workflows/ci.yaml)
