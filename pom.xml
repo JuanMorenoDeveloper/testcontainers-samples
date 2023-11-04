@@ -20,6 +20,7 @@
     <spotless.version>2.40.0</spotless.version>
     <maven-compiler-plugin.version>3.11.0</maven-compiler-plugin.version>
     <maven-surefire-plugin.version>3.2.1</maven-surefire-plugin.version>
+    <mockserver-netty.version>5.15.0</mockserver-netty.version>
   </properties>
 
   <dependencies>
@@ -55,6 +56,18 @@
       <artifactId>postgresql</artifactId>
       <groupId>org.testcontainers</groupId>
       <version>${testcontainers.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <artifactId>mockserver</artifactId>
+      <groupId>org.testcontainers</groupId>
+      <version>${testcontainers.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <artifactId>mockserver-netty</artifactId>
+      <groupId>org.mock-server</groupId>
+      <version>${mockserver-netty.version}</version>
       <scope>test</scope>
     </dependency>
   </dependencies>

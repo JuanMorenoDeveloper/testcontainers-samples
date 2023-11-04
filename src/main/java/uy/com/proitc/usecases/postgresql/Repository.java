@@ -1,10 +1,10 @@
-package uy.com.proitc.usecases;
+package uy.com.proitc.usecases.postgresql;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import javax.sql.DataSource;
 
-interface AppRepository {
+interface Repository {
 
   Long countProductsWithVersion();
 

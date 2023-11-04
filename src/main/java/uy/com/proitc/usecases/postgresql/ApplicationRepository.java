@@ -1,12 +1,12 @@
-package uy.com.proitc.usecases;
+package uy.com.proitc.usecases.postgresql;
 
 import javax.sql.DataSource;
 
-class DefaultAppRepository implements AppRepository {
+class ApplicationRepository implements Repository {
 
   private final DataSource dataSource;
 
-  public DefaultAppRepository(DataSource dataSource) {
+  public ApplicationRepository(DataSource dataSource) {
     this.dataSource = dataSource;
   }
 

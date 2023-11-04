@@ -1,4 +1,4 @@
-package uy.com.proitc.usecases;
+package uy.com.proitc.usecases.postgresql;
 
 import static java.util.Collections.singletonMap;
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Test;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
+import org.testcontainers.utility.DockerImageName;
 
 @Testcontainers
 class DefaultRepositoryIntegrationTest {
@@ -19,7 +20,7 @@ class DefaultRepositoryIntegrationTest {
   // Containers declared as static fields will be shared between test methods.
   @Container
   private static final PostgreSQLContainer<?> container =
-      new PostgreSQLContainer<>("postgres:13.7")
+      new PostgreSQLContainer<>(DockerImageName.parse("postgres:13.7"))
           .withDatabaseName("product_db")
           .withUsername("user")
           .withPassword("password")
@@ -32,7 +33,7 @@ class DefaultRepositoryIntegrationTest {
 
   @Test
   void givenId_whenFindNameById_thenGetName() {
-    var repository = new DefaultAppRepository(datasource);
+    var repository = new ApplicationRepository(datasource);
 
     String name = repository.findNameById(1);
 
@@ -41,7 +42,7 @@ class DefaultRepositoryIntegrationTest {
 
   @Test
   void givenAppsWithVersion_whenCountProductsWithVersion_thenGetCounter() {
-    var repository = new DefaultAppRepository(datasource);
+    var repository = new ApplicationRepository(datasource);
 
     long count = repository.countProductsWithVersion();
 
